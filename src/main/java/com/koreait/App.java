@@ -13,6 +13,7 @@ public class App {
     private final Scanner sc;
     List<Article> articles;
     private Article foundArticle;
+    private Article article;
 
     public App(Scanner sc) {
         this.sc = sc;
@@ -62,23 +63,35 @@ public class App {
                 System.out.println(id + "번 글이 생성되었습니다");
                 lastArticleId++;
 
-            } else if (cmd.equals("article list")) {
+            } else if (cmd.startsWith("article list")) {
                 System.out.println("==게시글 목록==");
 
-                if (articles.size() == 0) {
-                    System.out.println("아무것도 없어");
+                String[] cmdParts = cmd.split(" ");
+                String keyword = cmdParts.length == 3 ? cmdParts[2] : "";
 
+                List<Article> filteredArticles;
+                if (keyword.isEmpty()) {
+                    filteredArticles = articles;
+                } else {
+                    filteredArticles = new ArrayList<>();
+                    for (Article article : articles) {
+                        if (article.getTitle().contains(keyword)) {
+                            filteredArticles.add(article);
+                        }
+                    }
+                }
+
+                if (filteredArticles.isEmpty()) {
+                    System.out.println("아무것도 없어");
                 } else {
                     System.out.println("  번호   /    날짜   /   제목   /   내용   ");
-
-                    for (int i = articles.size() - 1; i >= 0; i--) {
-                        Article article = articles.get(i);
+                    for (int i = filteredArticles.size() - 1; i >= 0; i--) {
+                        Article article = filteredArticles.get(i);
                         if (Util.getNow().split(" ")[0].equals(article.getRegDate().split(" ")[0])) {
                             System.out.printf("  %d   /   %s      /   %s   /   %s  \n", article.getId(), article.getRegDate().split(" ")[1], article.getTitle(), article.getBody());
                         } else {
                             System.out.printf("  %d   /   %s      /   %s   /   %s  \n", article.getId(), article.getRegDate().split(" ")[0], article.getTitle(), article.getBody());
                         }
-
                     }
                 }
             } else if (cmd.startsWith("article detail")) {
