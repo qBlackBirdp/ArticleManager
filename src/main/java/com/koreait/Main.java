@@ -6,18 +6,21 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
-
         Scanner sc = new Scanner(System.in);
+        Member member = new Member(sc);
 
-        new Member(sc).signUp();
+        member.signUp();
 
         System.out.print("로그인 ID: ");
-        String loginId = sc.nextLine();
+        String loginId = sc.nextLine().trim();
         System.out.print("로그인 비밀번호: ");
-        String loginPw = sc.nextLine();
+        String loginPw = sc.nextLine().trim();
 
-        new Member(sc).logIn(loginId, loginPw);
+        if (member.logIn(loginId, loginPw)) {
+            System.out.println("로그인 성공");
+        } else {
+            System.out.println("로그인에 실패했습니다.");
+        }
 
         new App(sc).run();
 

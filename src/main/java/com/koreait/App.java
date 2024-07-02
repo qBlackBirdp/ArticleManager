@@ -61,6 +61,7 @@ public class App {
 
                 List<Article> filteredArticles;
                 if (keyword.isEmpty()) {
+                    System.out.println("검색어 : " + keyword);
                     filteredArticles = articles;
                 } else {
                     filteredArticles = new ArrayList<>();
@@ -73,7 +74,8 @@ public class App {
 
                 if (filteredArticles.isEmpty()) {
                     System.out.println("아무것도 없어");
-                } else {
+                }
+                else {
                     System.out.println("  번호   /    날짜   /   제목   /   내용   ");
                     for (int i = filteredArticles.size() - 1; i >= 0; i--) {
                         Article article = filteredArticles.get(i);
