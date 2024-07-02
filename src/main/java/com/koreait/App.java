@@ -1,9 +1,12 @@
 package com.koreait;
 
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
+
+    int id;
 
     private final Scanner sc;
 
@@ -12,6 +15,9 @@ public class App {
     }
 
     public void run() {
+        int lastId = 1;
+        id = lastId;
+
         System.out.println("== 프로그램 시작 ==");
 
         while (true) {
@@ -21,7 +27,7 @@ public class App {
             if (cmd.equals("exit")) {
                 System.out.println("== 프로그램 종료==");
                 break;
-            } else if (cmd.isEmpty()){
+            } else if (cmd.isEmpty()) {
                 System.out.println("명령어를 입력해주세요");
             }
 
@@ -31,7 +37,10 @@ public class App {
                 System.out.print("내용 : ");
                 String body = sc.nextLine().trim();
 
-                System.out.println("1번 글이 생성되었습니다.");
+
+                System.out.printf("%d번 글이 생성되었습니다.\n", id);
+
+                id = lastId + 1;
             }
         }
     }
