@@ -1,0 +1,100 @@
+package com.koreait;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class MemberController {
+
+    static Scanner sc;
+    static List<Member> members;
+
+    static int lastMemberId = 3;
+
+    public MemberController(Scanner sc) {
+        this.sc = sc;
+        members = new ArrayList<>();
+    }
+
+    private static boolean isJoinableLoginId(String loginId) {
+        for (Member member : members) {
+            if (member.getLoginId().equals(loginId)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void doJoin() {
+        System.out.println("==회원가입==");
+        int id = lastMemberId + 1;
+        String regDate = Util.getNow();
+        String loginId = null;
+        while (true) {
+            System.out.print("로그인 아이디 : ");
+            loginId = sc.nextLine().trim();
+            if (isJoinableLoginId(loginId) == false) {
+                System.out.println("이미 사용중이야");
+                continue;
+            }
+            break;
+        }
+        String loginPw = null;
+        while (true) {
+            System.out.print("비밀번호 : ");
+            loginPw = sc.nextLine();
+            System.out.print("비밀번호 확인 : ");
+            String loginPwConfirm = sc.nextLine();
+
+            if (loginPw.equals(loginPwConfirm) == false) {
+                System.out.println("비번 다시 확인해");
+                continue;
+            }
+            break;
+        }
+
+        System.out.print("이름 : ");
+        String name = sc.nextLine();
+
+        Member member = new Member(id, regDate, loginId, loginPw, name);
+        members.add(member);
+
+        System.out.println(id + "번 회원이 가입되었습니다");
+        lastMemberId++;
+    }
+
+    public static void doLogin() {
+        while (true) {
+            System.out.print("로그인 아이디 : ");
+            String loginId = sc.nextLine().trim();
+            System.out.print("로그인 비밀번호 : ");
+            String loginPw = sc.nextLine().trim();
+
+            Member member = findMemberByLoginId(loginId);
+            if (member == null) {
+                System.out.println("아이디 확인");
+            } else if (!member.getLoginPw().equals(loginPw)) {
+                System.out.println("비밀번호 틀림");
+            }
+            System.out.println("로그인 성공");
+        }
+
+    }
+
+    public static void makeTestUserData() {
+        System.out.println("테스트 유저 데이터 생성");
+        members.add(new Member(1, "2023-12-12 12:12:12", "test1", "test1", "내용1"));
+        members.add(new Member(2, Util.getNow(), Util.getNow(), "제목2", "내용2"));
+        members.add(new Member(3, Util.getNow(), Util.getNow(), "제목3", "내용3"));
+    }
+
+    private static Member findMemberByLoginId(String loginId) {
+        for (Member member : members) {
+            if (member.getLoginId().equals(loginId)) {
+                return member;
+            }
+        }
+        return null;
+    }
+}
+
