@@ -11,7 +11,7 @@ public class Member {
     private String loginId;
     private String loginPw;
     private String name;
-    static List<Member> memberList;
+    static List<Member> memberList = new ArrayList<>();
 
     public Member(Scanner sc) {
         this.sc = sc;
@@ -20,20 +20,44 @@ public class Member {
     public void signUp() {
 
         System.out.println("회원가입 ");
-        System.out.print("id 입력) ");
-        loginId = sc.nextLine().trim();
+
+        while (true) {
+            System.out.print("id 입력) ");
+            loginId = sc.nextLine().trim();
+
+            if (isDuplicateLoginId(loginId)) {
+                System.out.println("이미 사용 중인 ID입니다. 다른 ID를 입력해주세요.");
+            } else {
+                break;
+            }
+        }
         System.out.print("pw 입력) ");
-        loginPw = sc.nextLine().trim();
+        String loginPw = sc.nextLine().trim();
 
+        this.loginId = loginId;
+        this.loginPw = loginPw;
 
+        memberList.add(this);
 
+        System.out.println("회원가입이 완료되었습니다.");
     }
+
+
+    private boolean isDuplicateLoginId(String loginId) {
+        for (Member member : Member.memberList) {
+            if (member.loginId.equals(loginId)) return true;
+        }
+        return false;
+    }
+
     public void setLoginId(String loginId) {
         this.loginId = loginId;
     }
+
     public void setLoginPw(String loginPw) {
         this.loginPw = loginPw;
     }
+
     public boolean logIn(String loginId, String loginPw) {
         if (this.loginId != null && this.loginPw != null) {
             if (this.loginId.equals(loginId) && this.loginPw.equals(loginPw)) {
@@ -49,3 +73,5 @@ public class Member {
         }
     }
 }
+
+

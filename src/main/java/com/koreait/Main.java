@@ -11,15 +11,19 @@ public class Main {
 
         member.signUp();
 
-        System.out.print("로그인 ID: ");
-        String loginId = sc.nextLine().trim();
-        System.out.print("로그인 비밀번호: ");
-        String loginPw = sc.nextLine().trim();
+        while (true) {
+            System.out.print("로그인 ID: ");
+            String loginId = sc.nextLine().trim();
+            System.out.print("로그인 비밀번호: ");
+            String loginPw = sc.nextLine().trim();
 
-        if (member.logIn(loginId, loginPw)) {
-            System.out.println("로그인 성공");
-        } else {
-            System.out.println("로그인에 실패했습니다.");
+            if (member.logIn(loginId, loginPw)) {
+                System.out.println("로그인 성공");
+            } else {
+                System.out.println("로그인에 실패했습니다.");
+                continue;
+            }
+            break;
         }
 
         new App(sc).run();

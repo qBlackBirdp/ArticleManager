@@ -16,9 +16,12 @@ public class App {
         this.sc = sc;
         articles = new ArrayList<>();
         this.lastArticleId = 0;
+
     }
 
+
     public void run() {
+        Member member = new Member(sc);
 
         System.out.println("==프로그램 시작==");
 
@@ -37,6 +40,18 @@ public class App {
             if (cmd.equals("exit")) {
                 break;
             }
+
+            if (cmd.equals("signup")) {
+                member.signUp();
+            }
+            if (cmd.equals("login")) {
+                System.out.print("id 입력");
+                String id = sc.nextLine().trim();
+                System.out.print("pw 입력");
+                String pw = sc.nextLine().trim();
+                member.logIn(id,pw);
+            }
+
 
             if (cmd.equals("article write")) {
                 System.out.println("==게시글 작성==");
