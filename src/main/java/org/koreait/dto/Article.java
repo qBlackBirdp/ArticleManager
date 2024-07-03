@@ -12,6 +12,7 @@ public class Article extends Dto {
         this.updateDate = updateDate;
         this.title = title;
         this.body = body;
+        this.author = author;
     }
 
     public String getRegDate() {

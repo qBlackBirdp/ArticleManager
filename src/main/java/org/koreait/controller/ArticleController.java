@@ -144,8 +144,14 @@ public class ArticleController extends Controller {
             System.out.println("해당 게시글은 없습니다");
             return;
         }
-        articles.remove(foundArticle);
-        System.out.println(id + "번 게시글이 삭제되었습니다");
+        if(!isLogined()){
+            System.out.println("삭제 권한이 없습니다.");
+        }else if(currentUser.getName().equals(foundArticle.getAuthor())){
+            articles.remove(foundArticle);
+            System.out.println(id + "번 게시글이 삭제되었습니다");
+        }else {
+            System.out.println("삭제 권한이 없습니다.");
+        }
     }
 
     private void doModify() {
