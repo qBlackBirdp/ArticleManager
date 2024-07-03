@@ -11,6 +11,8 @@ public class App {
     int lastArticleId;
     private final Scanner sc;
     static List<Article> articles;
+    static List<Member> members = new ArrayList<>();
+
 
     public App(Scanner sc) {
         this.sc = sc;
@@ -21,13 +23,14 @@ public class App {
 
 
     public void run() {
-        Member member = new Member(sc);
 
         System.out.println("==프로그램 시작==");
 
         makeTestData();
+        makeTestUserData();
 
         int lastArticleId = 3;
+        int lastMemberId = 0;
 
         while (true) {
             System.out.print("명령어) ");
@@ -41,19 +44,59 @@ public class App {
                 break;
             }
 
-            if (cmd.equals("signup")) {
-                member.signUp();
-            }
-            if (cmd.equals("login")) {
-                System.out.print("id 입력");
-                String id = sc.nextLine().trim();
-                System.out.print("pw 입력");
-                String pw = sc.nextLine().trim();
-                member.logIn(id,pw);
-            }
+            if (cmd.equals("member join")) {
+                System.out.println("==회원가입==");
+                int id = lastMemberId + 1;
+                String regDate = Util.getNow();
+                String loginId = null;
+                while (true) {
+                    System.out.print("로그인 아이디 : ");
+                    loginId = sc.nextLine().trim();
+                    if (isJoinableLoginId(loginId) == false) {
+                        System.out.println("이미 사용중이야");
+                        continue;
+                    }
+                    break;
+                }
+                String loginPw = null;
+                while (true) {
+                    System.out.print("비밀번호 : ");
+                    loginPw = sc.nextLine();
+                    System.out.print("비밀번호 확인 : ");
+                    String loginPwConfirm = sc.nextLine();
 
+                    if (loginPw.equals(loginPwConfirm) == false) {
+                        System.out.println("비번 다시 확인해");
+                        continue;
+                    }
+                    break;
+                }
 
-            if (cmd.equals("article write")) {
+                System.out.print("이름 : ");
+                String name = sc.nextLine();
+
+                Member member = new Member(id, regDate, loginId, loginPw, name);
+                members.add(member);
+
+                System.out.println(id + "번 회원이 가입되었습니다");
+                lastMemberId++;
+            } else if (cmd.equals("member login")) {
+
+                while (true) {
+                    String loginId = sc.nextLine().trim();
+                    System.out.print("로그인 아이디 : ");
+                    String loginPw = sc.nextLine().trim();
+                    System.out.print("로그인 비밀번호 : ");
+                    if (isLoginIdExist(loginId)) {
+                        if (loginPw.equals(loginPw) == false) {
+                            System.out.println("비밀번호가 틀렸습니다.");
+                            continue;
+                        }
+                        break;
+                    }
+                    System.out.print("로그인 성공");
+                }
+            } else if (cmd.equals("article write")) {
                 System.out.println("==게시글 작성==");
                 int id = lastArticleId + 1;
                 String regDate = Util.getNow();
@@ -89,8 +132,7 @@ public class App {
 
                 if (filteredArticles.isEmpty()) {
                     System.out.println("아무것도 없어");
-                }
-                else {
+                } else {
                     System.out.println("  번호   /    날짜   /   제목   /   내용   ");
                     for (int i = filteredArticles.size() - 1; i >= 0; i--) {
                         Article article = filteredArticles.get(i);
@@ -178,10 +220,35 @@ public class App {
         return null;
     }
 
+    private static boolean isJoinableLoginId(String loginId) {
+        for (Member member : members) {
+            if (member.getLoginId().equals(loginId)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean isLoginIdExist(String loginId) {
+        for (Member member : members) {
+            if (member.getLoginId().equals(loginId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static void makeTestData() {
         System.out.println("테스트 데이터 생성");
         articles.add(new Article(1, "2023-12-12 12:12:12", "2023-12-12 12:12:12", "제목1", "내용1"));
         articles.add(new Article(2, Util.getNow(), Util.getNow(), "제목2", "내용2"));
         articles.add(new Article(3, Util.getNow(), Util.getNow(), "제목3", "내용3"));
+    }
+
+    private static void makeTestUserData() {
+        System.out.println("테스트 유저 데이터 생성");
+        members.add(new Member(1, "2023-12-12 12:12:12", "test1", "test1", "내용1"));
+        members.add(new Member(2, Util.getNow(), Util.getNow(), "제목2", "내용2"));
+        members.add(new Member(3, Util.getNow(), Util.getNow(), "제목3", "내용3"));
     }
 }
