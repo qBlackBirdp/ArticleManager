@@ -1,13 +1,17 @@
-package com.koreait;
+package org.koreait.controller;
+
+import org.koreait.dto.Article;
+import org.koreait.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ArticleController {
+public class ArticleController extends Controller {
     static int lastArticleId;
     static Scanner sc;
     static List<Article> articles;
+    private String cmd;
 
     public ArticleController(Scanner sc) {
         this.sc = sc;
@@ -15,10 +19,33 @@ public class ArticleController {
         this.lastArticleId = 3;
     }
 
+    public void doAction(String cmd, String actionMethodName) {
+        this.cmd = cmd;
 
-    public static void doWrite() {
+        switch (actionMethodName) {
+            case "write":
+                doWrite();
+                break;
+            case "list":
+                showList();
+                break;
+            case "detail":
+                showDetail();
+                break;
+            case "modify":
+                doModify();
+                break;
+            case "delete":
+                doDelete();
+                break;
+            default:
+                System.out.println("명령어 확인 (actionMethodName) 오류");
+                break;
+        }
+    }
 
 
+    private void doWrite() {
         System.out.println("==게시글 작성==");
         int id = lastArticleId + 1;
         String regDate = Util.getNow();
@@ -35,7 +62,7 @@ public class ArticleController {
         lastArticleId++;
     }
 
-    public static void showList(String cmd) {
+    private void showList() {
 
         System.out.println("==게시글 목록==");
 
@@ -70,7 +97,7 @@ public class ArticleController {
         }
     }
 
-    public static void showDetail() {
+    private void showDetail() {
 
         System.out.print("명령어) ");
         String cmd = sc.nextLine().trim();
@@ -91,7 +118,7 @@ public class ArticleController {
         System.out.println("내용 : " + foundArticle.getBody());
     }
 
-    public static void doDelete(String cmd) {
+    private void doDelete() {
 
         System.out.println("==게시글 삭제==");
 
@@ -107,7 +134,7 @@ public class ArticleController {
         System.out.println(id + "번 게시글이 삭제되었습니다");
     }
 
-    public static void doModify(String cmd) {
+    private void doModify() {
         System.out.println("==게시글 수정==");
 
         int id = Integer.parseInt(cmd.split(" ")[2]);
@@ -132,7 +159,7 @@ public class ArticleController {
         System.out.println(id + "번 게시글이 수정되었습니다");
     }
 
-    private static Article getArticleById(int id) {
+    private Article getArticleById(int id) {
         for (Article article : articles) {
             if (article.getId() == id) {
                 return article;
@@ -141,7 +168,7 @@ public class ArticleController {
         return null;
     }
 
-    static void makeTestData() {
+    public void makeTestData() {
         System.out.println("테스트 데이터 생성");
         articles.add(new Article(1, "2023-12-12 12:12:12", "2023-12-12 12:12:12", "제목1", "내용1"));
         articles.add(new Article(2, Util.getNow(), Util.getNow(), "제목2", "내용2"));

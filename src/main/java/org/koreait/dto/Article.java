@@ -1,7 +1,6 @@
-package com.koreait;
+package org.koreait.dto;
 
-public class Article {private int id;
-    private String regDate;
+public class Article extends Dto {
     private String updateDate;
     private String title;
     private String body;

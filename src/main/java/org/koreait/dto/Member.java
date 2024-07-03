@@ -1,12 +1,7 @@
-package com.koreait;
+package org.koreait.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+public class Member extends Dto {
 
-class Member {
-    private int id;
-    private String regDate;
     private String loginId;
     private String loginPw;
     private String name;

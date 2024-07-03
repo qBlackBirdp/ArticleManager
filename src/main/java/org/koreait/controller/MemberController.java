@@ -1,31 +1,39 @@
-package com.koreait;
+package org.koreait.controller;
+
+import org.koreait.util.Util;
+import org.koreait.dto.Member;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class MemberController {
+public class MemberController extends Controller {
 
     static Scanner sc;
     static List<Member> members;
 
     static int lastMemberId = 3;
+    static String cmd;
 
     public MemberController(Scanner sc) {
         this.sc = sc;
         members = new ArrayList<>();
     }
 
-    private static boolean isJoinableLoginId(String loginId) {
-        for (Member member : members) {
-            if (member.getLoginId().equals(loginId)) {
-                return false;
-            }
+    public void doAction(String cmd, String actionMethodName) {
+        this.cmd = cmd;
+
+        switch (actionMethodName) {
+            case "join":
+                doJoin();
+                break;
+            default:
+                System.out.println("명령어 확인 (actionMethodName) 오류");
+                break;
         }
-        return true;
     }
 
-    public static void doJoin() {
+    private void doJoin() {
         System.out.println("==회원가입==");
         int id = lastMemberId + 1;
         String regDate = Util.getNow();
@@ -63,7 +71,7 @@ public class MemberController {
         lastMemberId++;
     }
 
-    public static void doLogin() {
+    private void doLogin() {
         while (true) {
             System.out.print("로그인 아이디 : ");
             String loginId = sc.nextLine().trim();
@@ -80,6 +88,14 @@ public class MemberController {
         }
 
     }
+    private boolean isJoinableLoginId(String loginId) {
+        for (Member member : members) {
+            if (member.getLoginId().equals(loginId)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static void makeTestUserData() {
         System.out.println("테스트 유저 데이터 생성");
@@ -88,7 +104,7 @@ public class MemberController {
         members.add(new Member(3, Util.getNow(), Util.getNow(), "제목3", "내용3"));
     }
 
-    private static Member findMemberByLoginId(String loginId) {
+    private Member findMemberByLoginId(String loginId) {
         for (Member member : members) {
             if (member.getLoginId().equals(loginId)) {
                 return member;
