@@ -1,11 +1,14 @@
 package org.koreait.controller;
 
 import org.koreait.dto.Article;
+import org.koreait.dto.Member;
 import org.koreait.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import static org.koreait.controller.MemberController.currentUser;
 
 public class ArticleController extends Controller {
     static int lastArticleId;
@@ -46,6 +49,12 @@ public class ArticleController extends Controller {
 
 
     private void doWrite() {
+
+        if (currentUser == null) {
+            System.out.println("로그인 하지 않으면 글 못써.");
+            return;
+        }
+
         System.out.println("==게시글 작성==");
         int id = lastArticleId + 1;
         String regDate = Util.getNow();

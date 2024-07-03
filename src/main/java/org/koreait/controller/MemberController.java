@@ -15,6 +15,8 @@ public class MemberController extends Controller {
     static int lastMemberId = 3;
     static String cmd;
 
+    static Member currentUser = null;
+
     public MemberController(Scanner sc) {
         this.sc = sc;
         members = new ArrayList<>();
@@ -26,6 +28,12 @@ public class MemberController extends Controller {
         switch (actionMethodName) {
             case "join":
                 doJoin();
+                break;
+            case "login":
+                doLogin();
+                break;
+            case "logout":
+                doLogout();
                 break;
             default:
                 System.out.println("명령어 확인 (actionMethodName) 오류");
@@ -72,7 +80,12 @@ public class MemberController extends Controller {
     }
 
     private void doLogin() {
-        while (true) {
+        if (currentUser != null) {
+            System.out.println("이미 로그인 되어있음.");
+            return;
+        }
+        System.out.println("==로그인==");
+
             System.out.print("로그인 아이디 : ");
             String loginId = sc.nextLine().trim();
             System.out.print("로그인 비밀번호 : ");
@@ -81,13 +94,25 @@ public class MemberController extends Controller {
             Member member = findMemberByLoginId(loginId);
             if (member == null) {
                 System.out.println("아이디 확인");
+                return;
             } else if (!member.getLoginPw().equals(loginPw)) {
                 System.out.println("비밀번호 틀림");
+                return;
             }
-            System.out.println("로그인 성공");
-        }
+            currentUser = member;
 
+            System.out.printf("%s님 로그인 성공", member.getName());
     }
+
+    private void doLogout() {
+        if (currentUser != null) {
+            System.out.println("로그아웃.");
+            currentUser = null;
+        } else {
+            System.out.println("로그인 하지 않음.");
+        }
+    }
+
     private boolean isJoinableLoginId(String loginId) {
         for (Member member : members) {
             if (member.getLoginId().equals(loginId)) {
