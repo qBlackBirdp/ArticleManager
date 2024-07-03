@@ -4,8 +4,9 @@ public class Article extends Dto {
     private String updateDate;
     private String title;
     private String body;
+    private String author;
 
-    public Article(int id, String regDate, String updateDate, String title, String body) {
+    public Article(int id, String regDate, String updateDate, String title, String body, String author) {
         this.id = id;
         this.regDate = regDate;
         this.updateDate = updateDate;
@@ -53,15 +54,23 @@ public class Article extends Dto {
         this.body = body;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     @Override
     public String toString() {
         return "Article{" +
-                "id=" + id +
-                ", regDate='" + regDate + '\'' +
-                ", updateDate='" + updateDate + '\'' +
+                "updateDate='" + updateDate + '\'' +
                 ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
+                ", author='" + author + '\'' +
+                ", id=" + id +
+                ", regDate='" + regDate + '\'' +
                 '}';
     }
-
 }

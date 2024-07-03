@@ -22,6 +22,10 @@ public class MemberController extends Controller {
         members = new ArrayList<>();
     }
 
+    public boolean isLogined(){
+        return currentUser != null;
+    }
+
     public void doAction(String cmd, String actionMethodName) {
         this.cmd = cmd;
 
@@ -80,7 +84,7 @@ public class MemberController extends Controller {
     }
 
     private void doLogin() {
-        if (currentUser != null) {
+        if (isLogined()) {
             System.out.println("이미 로그인 되어있음.");
             return;
         }
@@ -99,13 +103,14 @@ public class MemberController extends Controller {
                 System.out.println("비밀번호 틀림");
                 return;
             }
+
             currentUser = member;
 
-            System.out.printf("%s님 로그인 성공", member.getName());
+            System.out.printf("%s님 로그인 성공\n", currentUser.getName());
     }
 
     private void doLogout() {
-        if (currentUser != null) {
+        if (!isLogined()) {
             System.out.println("로그아웃.");
             currentUser = null;
         } else {
@@ -124,9 +129,9 @@ public class MemberController extends Controller {
 
     public static void makeTestUserData() {
         System.out.println("테스트 유저 데이터 생성");
-        members.add(new Member(1, "2023-12-12 12:12:12", "test1", "test1", "내용1"));
-        members.add(new Member(2, Util.getNow(), Util.getNow(), "제목2", "내용2"));
-        members.add(new Member(3, Util.getNow(), Util.getNow(), "제목3", "내용3"));
+        members.add(new Member(1, "2023-12-12 12:12:12", "test1", "test1", "김민수"));
+        members.add(new Member(2, Util.getNow(), "test2", "test2", "최민희"));
+        members.add(new Member(3, Util.getNow(), "test3", "test3", "Ryan"));
     }
 
     private Member findMemberByLoginId(String loginId) {
@@ -137,5 +142,6 @@ public class MemberController extends Controller {
         }
         return null;
     }
+
 }
 
