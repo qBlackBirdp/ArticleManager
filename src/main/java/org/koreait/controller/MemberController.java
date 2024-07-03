@@ -110,7 +110,7 @@ public class MemberController extends Controller {
     }
 
     private void doLogout() {
-        if (!isLogined()) {
+        if (isLogined()) {
             System.out.println("로그아웃.");
             currentUser = null;
         } else {

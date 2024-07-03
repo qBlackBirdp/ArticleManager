@@ -112,8 +112,6 @@ public class ArticleController extends Controller {
 
     private void showDetail() {
 
-        System.out.print("명령어) ");
-        String cmd = sc.nextLine().trim();
         System.out.println("==게시글 상세보기==");
 
         int id = Integer.parseInt(cmd.split(" ")[2]);
@@ -129,7 +127,7 @@ public class ArticleController extends Controller {
         System.out.println("수정날짜 : " + foundArticle.getUpdateDate());
         System.out.println("제목 : " + foundArticle.getTitle());
         System.out.println("내용 : " + foundArticle.getBody());
-        System.out.println("작성자 : ");
+        System.out.println("작성자 : " + foundArticle.getAuthor());
     }
 
     private void doDelete() {
@@ -165,18 +163,25 @@ public class ArticleController extends Controller {
             System.out.println("해당 게시글은 없습니다");
             return;
         }
-        System.out.println("기존 제목 : " + foundArticle.getTitle());
-        System.out.println("기존 내용 : " + foundArticle.getBody());
-        System.out.print("새 제목 : ");
-        String newTitle = sc.nextLine();
-        System.out.print("새 내용 : ");
-        String newBody = sc.nextLine();
 
-        foundArticle.setTitle(newTitle);
-        foundArticle.setBody(newBody);
-        foundArticle.setUpdateDate(Util.getNow());
+        if(!isLogined()){
+            System.out.println("수정 권한이 없습니다.");
+        }else if(currentUser.getName().equals(foundArticle.getAuthor())){
+            System.out.println("기존 제목 : " + foundArticle.getTitle());
+            System.out.println("기존 내용 : " + foundArticle.getBody());
+            System.out.print("새 제목 : ");
+            String newTitle = sc.nextLine();
+            System.out.print("새 내용 : ");
+            String newBody = sc.nextLine();
 
-        System.out.println(id + "번 게시글이 수정되었습니다");
+            foundArticle.setTitle(newTitle);
+            foundArticle.setBody(newBody);
+            foundArticle.setUpdateDate(Util.getNow());
+
+            System.out.println(id + "번 게시글이 수정되었습니다.");
+        }else {
+            System.out.println("수정 권한이 없습니다.");
+        }
     }
 
     private Article getArticleById(int id) {
