@@ -1,5 +1,6 @@
 package org.koreait.controller;
 
+import org.koreait.articleManager.Container;
 import org.koreait.util.Util;
 import org.koreait.dto.Member;
 
@@ -15,15 +16,11 @@ public class MemberController extends Controller {
     static int lastMemberId = 3;
     static String cmd;
 
-    static Member currentUser = null;
+
 
     public MemberController(Scanner sc) {
         this.sc = sc;
-        members = new ArrayList<>();
-    }
-
-    public boolean isLogined(){
-        return currentUser != null;
+        members = Container.memberDao.members;
     }
 
     public void doAction(String cmd, String actionMethodName) {
@@ -31,6 +28,10 @@ public class MemberController extends Controller {
 
         switch (actionMethodName) {
             case "join":
+//                if (isLogined()) {
+//                    System.out.println("이미 로그인 되어있음.");
+//                    return;
+//                }
                 doJoin();
                 break;
             case "login":
@@ -84,35 +85,35 @@ public class MemberController extends Controller {
     }
 
     private void doLogin() {
-        if (isLogined()) {
-            System.out.println("이미 로그인 되어있음.");
-            return;
-        }
+//        if (isLogined()) {
+//            System.out.println("이미 로그인 되어있음.");
+//            return;
+//        }
         System.out.println("==로그인==");
 
-            System.out.print("로그인 아이디 : ");
-            String loginId = sc.nextLine().trim();
-            System.out.print("로그인 비밀번호 : ");
-            String loginPw = sc.nextLine().trim();
+        System.out.print("로그인 아이디 : ");
+        String loginId = sc.nextLine().trim();
+        System.out.print("로그인 비밀번호 : ");
+        String loginPw = sc.nextLine().trim();
 
-            Member member = findMemberByLoginId(loginId);
-            if (member == null) {
-                System.out.println("아이디 확인");
-                return;
-            } else if (!member.getLoginPw().equals(loginPw)) {
-                System.out.println("비밀번호 틀림");
-                return;
-            }
+        Member member = findMemberByLoginId(loginId);
+        if (member == null) {
+            System.out.println("아이디 확인");
+            return;
+        } else if (!member.getLoginPw().equals(loginPw)) {
+            System.out.println("비밀번호 틀림");
+            return;
+        }
 
-            currentUser = member;
+        loginedMember = member;
 
-            System.out.printf("%s님 로그인 성공\n", currentUser.getName());
+        System.out.printf("%s님 로그인 성공\n", loginedMember.getName());
     }
 
     private void doLogout() {
         if (isLogined()) {
             System.out.println("로그아웃.");
-            currentUser = null;
+            loginedMember = null;
         } else {
             System.out.println("로그인 하지 않음.");
         }

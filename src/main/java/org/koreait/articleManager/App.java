@@ -6,6 +6,8 @@ import org.koreait.controller.MemberController;
 
 import java.util.Scanner;
 
+import static org.koreait.controller.Controller.isLogined;
+
 
 public class App {
     public void run() {
@@ -43,6 +45,30 @@ public class App {
             }
 
             String actionMethodName = cmdBits[1];
+            String forLoginCheck = controllerName + "/" + actionMethodName;
+
+
+            switch (forLoginCheck) {
+                case "article/write":
+                case "article/delete":
+                case "article/modify":
+                case "member/logout":
+                    if (isLogined() == false) {
+                        System.out.println("로그인 필요");
+                        continue;
+                    }
+                    break;
+            }
+
+            switch (forLoginCheck) {
+                case "member/login":
+                case "member/join":
+                    if (isLogined()) {
+                        System.out.println("로그아웃 필요");
+                        continue;
+                    }
+                    break;
+            }
 
             if (controllerName.equals("article")) {
                 controller = articleController;

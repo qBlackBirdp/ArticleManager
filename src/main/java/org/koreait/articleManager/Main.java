@@ -1,6 +1,5 @@
 package org.koreait.articleManager;
 
-
 import java.util.Scanner;
 
 public class Main {

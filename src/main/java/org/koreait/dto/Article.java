@@ -4,15 +4,18 @@ public class Article extends Dto {
     private String updateDate;
     private String title;
     private String body;
-    private String author;
 
-    public Article(int id, String regDate, String updateDate, String title, String body, String author) {
+
+    private int memberId;
+
+    public Article(int id, String regDate, String updateDate, String title, String body, int memberId) {
         this.id = id;
         this.regDate = regDate;
         this.updateDate = updateDate;
         this.title = title;
         this.body = body;
-        this.author = author;
+
+        this.memberId = memberId;
     }
 
     public String getRegDate() {
@@ -55,12 +58,11 @@ public class Article extends Dto {
         this.body = body;
     }
 
-    public String getAuthor() {
-        return author;
+    public int getMemberId() {
+        return memberId;
     }
-
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
     }
 
     @Override
@@ -69,9 +71,10 @@ public class Article extends Dto {
                 "updateDate='" + updateDate + '\'' +
                 ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
-                ", author='" + author + '\'' +
+                ", memberId=" + memberId +
                 ", id=" + id +
                 ", regDate='" + regDate + '\'' +
+                ", memberId=" + memberId +
                 '}';
     }
 }
